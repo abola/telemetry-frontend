@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="WARN">
+    <appenders>
+        <!--  輸出控制台的配置 -->
+        <Console name="console" target="SYSTEM_OUT">
+            <JsonLayout compact="true" eventEol="true"><!--Json 格式輸出 -->
+                <KeyValuePair key="hostname" value="${hostName}"/>
+            </JsonLayout>
+        </Console>
+
+        <Http name="Http" url="http://localhost:24224">
+            <JsonLayout compact="true" eventEol="true">
+                <KeyValuePair key="hostname" value="${hostName}"/>
+            </JsonLayout>
+        </Http>
+    </appenders>
+
+    <!-- 然後定義logger，只有定義了logger並引入的appender，appender才會生效 -->
+    <loggers>
+        <!--過濾掉spring和mybatis的一些無用的DEBUG信息        -->
+        <logger name="org.springframework" level="ERROR"></logger>
+        <logger name="org.mybatis" level="ERROR"></logger>
+        <logger name="org.hibernate" level="ERROR"></logger>
+
+        <root level="info">
+            <appender-ref ref="console"/>
+            <appender-ref ref="Http"/>
+        </root>
+    </loggers>
+</configuration>
