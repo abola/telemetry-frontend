@@ -4,9 +4,9 @@ metadata:
   name: {{ .Values.project.name }}
 spec:
   hosts:
-  - "{{ .Values.project.name }}.{{ .Values.google.ingressgatewayIp }}.nip.io"
+  - "{{ .Values.project.name }}.{{ .Values.google.project.ingressgatewayIp }}.nip.io"
   gateways:
-  - {{ .Values.google.gatewayName }}
+  - {{ .Values.google.project.gatewayName }}
   http:
   - match:
     - uri:
