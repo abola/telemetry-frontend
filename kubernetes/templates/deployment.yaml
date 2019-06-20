@@ -1,1 +1,17 @@
-
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ .Values.project.name }}
+spec:
+  replicas: {{ .Values.project.replicas }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.project.name }}
+    spec:
+      containers:
+      - name: {{ .Values.project.name }}
+        image: gcr.io/{{ .Values.google.project.id }}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: {{ .Values.project.portNumber }}
