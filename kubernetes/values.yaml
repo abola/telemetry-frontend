@@ -1,3 +1,9 @@
 google: 
   project: 
     id:
+project:
+  name: telemetry-frontend
+  portNumber: 8080
+  replicas: 1
+  imageName: telemetry-frontend
+  imageTag: v1
