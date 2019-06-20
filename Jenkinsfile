@@ -27,7 +27,7 @@ pipeline {
 
     stage('deploy'){
       steps{
-        sh "helm template kubernetes/ --set google.project.id=${params.googleProjectId} --set project.imageName=${params.imageName} --set project.imageTag=${params.imageTag} "
+        sh "helm template kubernetes/ --set google.project.id=${params.googleProjectId} --set project.imageName=${params.imageName} --set project.imageTag=${params.imageTag} --set google.project.ingressgatewayIp=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}') | kubectl apply -f -"
       }
     }
   }
