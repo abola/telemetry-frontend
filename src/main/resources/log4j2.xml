@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration status="WARN">
     <appenders>
-        <!--  輸出控制台的配置 -->
-        <Console name="console" target="SYSTEM_OUT">
-            <JsonLayout compact="true" eventEol="true"><!--Json 格式輸出 -->
-                <KeyValuePair key="hostname" value="${hostName}"/>
-            </JsonLayout>
-        </Console>
-
-        <Http name="Http" url="http://localhost:24224">
+        <Http name="Http" url="http://fluentd-es.logging:24224">
             <JsonLayout compact="true" eventEol="true">
                 <KeyValuePair key="hostname" value="${hostName}"/>
             </JsonLayout>
@@ -23,7 +16,6 @@
         <logger name="org.hibernate" level="ERROR"></logger>
 
         <root level="info">
-            <appender-ref ref="console"/>
             <appender-ref ref="Http"/>
         </root>
     </loggers>
