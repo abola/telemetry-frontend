@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
       - name: {{ .Values.project.name }}
-        image: gcr.io/{{ .Values.google.project.id }}
+        image: gcr.io/{{ .Values.google.project.id }}/{{ .Values.project.imageName }}:{{ .Values.project.imageTag }}
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: {{ .Values.project.portNumber }}
