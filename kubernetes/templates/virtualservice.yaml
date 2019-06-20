@@ -1,0 +1,18 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ .Values.project.name }}
+spec:
+  hosts:
+  - "{{ .Values.project.name }}.{{ .Values.google.ingressgatewayIp }}.nip.io"
+  gateways:
+  - {{ .Values.google.gatewayName }}
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: {{ .Values.project.svc }}
+        port:
+          number: {{ .Values.project.portNumber }}
