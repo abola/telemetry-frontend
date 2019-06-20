@@ -1,9 +1,12 @@
 google: 
   project: 
-    id:
+    id: 
+    ingressgatewayIp: 
+    gatewayName: devops-camp-gateway
 project:
   name: telemetry-frontend
   portNumber: 8080
   replicas: 1
   imageName: telemetry-frontend
   imageTag: v1
+  svc: telemetry-frontend.default.svc.cluster.local
