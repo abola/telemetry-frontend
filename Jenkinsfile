@@ -3,7 +3,7 @@ pipeline {
   agent any
   
   parameters {
-    string(description: 'GCP Project ID', name: 'googleProjectId', defaultValue: "$GOOGLE_PROJECT_ID" )
+    string(description: 'GCP Project ID', name: 'googleProjectId', defaultValue: env.GOOGLE_PROJECT_ID )
     string(description: 'Project image name', name: 'imageName', defaultValue: 'telemetry-frontend')
     string(description: 'Project image tag', name: 'imageTag', defaultValue: 'v1')
   }
