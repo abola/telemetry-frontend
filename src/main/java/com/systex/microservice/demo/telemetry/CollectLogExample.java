@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.File;
-import java.nio.charset.Charset;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Map;
 import java.util.UUID;
 
@@ -47,11 +48,23 @@ public class CollectLogExample {
 
     @GetMapping(path="/")
     public String entry() throws Exception{
-        File file = new File( getClass().getClassLoader().getResource("index.html").getFile() );
-
-        return com.google.common.io.Files.toString(file, Charset.defaultCharset());
+        ClassLoader classLoader = getClass().getClassLoader();
+        InputStream inputStream = classLoader.getResourceAsStream("index.html");
+        return readFromInputStream(inputStream);
     }
-
+    private String readFromInputStream(InputStream inputStream)
+            throws Exception {
+        StringBuilder resultStringBuilder = new StringBuilder();
+        try (BufferedReader br
+                     = new BufferedReader(new InputStreamReader(inputStream))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                resultStringBuilder.append(line).append("\n");
+            }
+        }
+        return resultStringBuilder.toString();
+    }
+    
     private String toJson(Object obj) throws Exception{
         return new ObjectMapper().writeValueAsString(obj);
     }
