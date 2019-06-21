@@ -10,12 +10,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.File;
+import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.UUID;
 
 
 @RestController
-@RequestMapping(path = "/telemetry")
+@RequestMapping(path = "/")
 public class CollectLogExample {
 
     Logger log = LogManager.getLogger(CollectLogExample.class);
@@ -26,7 +28,7 @@ public class CollectLogExample {
      * @return
      * @throws Exception
      */
-    @GetMapping(path="/logging/demo/{item}/add")
+    @GetMapping(path="/logging/{item}/add")
     public String item(@PathVariable("item") String item) throws Exception{
 
         if (Strings.isNullOrEmpty(item) ) return "{\"status\":\"error\"}";
@@ -41,6 +43,13 @@ public class CollectLogExample {
         log.info(toJson(logMap));
 
         return "{\"status\":\"done\"}";
+    }
+
+    @GetMapping(path="/")
+    public String entry() throws Exception{
+        File file = new File( getClass().getClassLoader().getResource("index.html").getFile() );
+
+        return com.google.common.io.Files.toString(file, Charset.defaultCharset());
     }
 
     private String toJson(Object obj) throws Exception{
