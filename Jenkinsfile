@@ -3,7 +3,7 @@ pipeline {
   agent any
   
   parameters {
-    string(description: 'GCP Project ID', name: 'googleProjectId', defaultValue: env.DOCKER_VERSION)
+    string(description: 'GCP Project ID', name: 'googleProjectId', defaultValue: env.JENKINS_URL)
     string(description: 'Project image name', name: 'imageName', defaultValue: 'telemetry-frontend')
     string(description: 'Project image tag', name: 'imageTag', defaultValue: 'v1')
   }
