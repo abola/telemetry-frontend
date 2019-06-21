@@ -1,5 +1,7 @@
 pipeline {
+  
   agent any
+  
   parameters {
     string(description: 'GCP Project ID', name: 'googleProjectId', defaultValue: env.DOCKER_VERSION)
     string(description: 'Project image name', name: 'imageName', defaultValue: 'telemetry-frontend')
