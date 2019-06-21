@@ -1,1 +1,30 @@
-hello
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>日誌產生測試</h2>
+
+<button type="button" onclick="loadDoc('Apple iPhone XR')">Apple iPhone XR</button>
+<button type="button" onclick="loadDoc('Apple Macbook Pro')">Apple Macbook Pro</button>
+<button type="button" onclick="loadDoc('Apple Macbook Air')">Apple Macbook Air</button>
+<button type="button" onclick="loadDoc('Mac Pro')">Mac Pro</button>
+
+<p>每點一次產生一個模擬訂單日誌.</p>
+
+<p id="demo"></p>
+
+<script>
+function loadDoc(item) {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange=function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("demo").innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("GET", "/logging/"+item+"/add", true);
+  xhttp.send();
+}
+</script>
+
+</body>
+</html>
