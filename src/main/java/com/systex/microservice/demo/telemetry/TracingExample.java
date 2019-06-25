@@ -21,28 +21,32 @@ public class TracingExample {
 
     Logger log = LogManager.getLogger(TracingExample.class);
 
-    public TracingExample(){
-        log.info("test");
-    }
     /**
      * 模擬購物車新增品項的 API 接口
      * @return
      * @throws Exception
      */
     @GetMapping(path="/list")
-    public String item() throws Exception{
+    public String item() {
 
-        HttpResponse<String> response = Unirest.get("http://telemetry-backend:8080/get/listQuote")
-                .headers(getTraceHeaders()) // 將 tracing 相關 header 送給下一個  request
-                .header("cache-control", "no-cache")
-                .asString();
+        try {
+            HttpResponse<String> response = Unirest.get("http://telemetry-backend:8080/get/listQuote")
+                    .headers(getTraceHeaders()) // 將 tracing 相關 header 送給下一個  request
+                    .header("cache-control", "no-cache")
+                    .asString();
 
-        HttpResponse<String> response2 = Unirest.get("http://telemetry-backend:8080/get/price/123")
-                .headers(getTraceHeaders()) // 將 tracing 相關 header 送給下一個  request
-                .header("cache-control", "no-cache")
-                .asString();
+            HttpResponse<String> response2 = Unirest.get("http://telemetry-backend:8080/get/price/123")
+                    .headers(getTraceHeaders()) // 將 tracing 相關 header 送給下一個  request
+                    .header("cache-control", "no-cache")
+                    .asString();
 
-        return response.getBody();
+            log.info("/tracing/list request Success");
+            return response.getBody();
+        } catch (Exception ex){
+            log.error("/tracing/list request Failed. Cause by: " + ex.getMessage());
+            return "{}";
+        }
+
     }
 
     /**

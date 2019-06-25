@@ -4,6 +4,7 @@
         <Http name="Http" url="http://fluentd-es.logging:24224">
             <JsonLayout compact="true" eventEol="true">
                 <KeyValuePair key="hostname" value="${hostName}"/>
+                <KeyValuePair key="_tracing" value="$${ctx:tracing}"/>
             </JsonLayout>
         </Http>
     </appenders>
