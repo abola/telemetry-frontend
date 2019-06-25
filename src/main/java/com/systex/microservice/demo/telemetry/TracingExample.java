@@ -41,7 +41,7 @@ public class TracingExample {
             List<Map<String, String>> items = new ObjectMapper().readValue(response.getBody(), new TypeReference<List<Map<String, String>>>() {});
 
             for( Map<String, String> item: items ) {
-                HttpResponse<String> response2 = Unirest.get("http://telemetry-backend:8080/get/price/"+item.get("uniqueId"))
+                HttpResponse<String> response2 = Unirest.get("http://telemetry-backend:8080/get/inStock/"+item.get("uniqueId"))
                         .headers(getTraceHeaders()) // 將 tracing 相關 header 送給下一個  request
                         .header("cache-control", "no-cache")
                         .asString();
