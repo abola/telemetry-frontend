@@ -7,7 +7,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,12 +23,11 @@ public class TracingExample {
 
     /**
      * 模擬購物車新增品項的 API 接口
-     * @param item
      * @return
      * @throws Exception
      */
     @GetMapping(path="/list")
-    public String item(@PathVariable("item") String item) throws Exception{
+    public String item() throws Exception{
 
         HttpResponse<String> response = Unirest.get("http://telemetry-backend:8080/get/listQuote")
                 .headers(getTraceHeaders()) // 將 tracing 相關 header 送給下一個  request
