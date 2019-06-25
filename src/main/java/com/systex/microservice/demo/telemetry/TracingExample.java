@@ -1,5 +1,7 @@
 package com.systex.microservice.demo.telemetry;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Maps;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -35,11 +38,14 @@ public class TracingExample {
                     .header("cache-control", "no-cache")
                     .asString();
 
-            HttpResponse<String> response2 = Unirest.get("http://telemetry-backend:8080/get/price/123")
-                    .headers(getTraceHeaders()) // 將 tracing 相關 header 送給下一個  request
-                    .header("cache-control", "no-cache")
-                    .asString();
+            List<Map<String, String>> items = new ObjectMapper().readValue(response.getBody(), new TypeReference<List<Map<String, String>>>() {});
 
+            for( Map<String, String> item: items ) {
+                HttpResponse<String> response2 = Unirest.get("http://telemetry-backend:8080/get/price/"+item.get("uniqueId"))
+                        .headers(getTraceHeaders()) // 將 tracing 相關 header 送給下一個  request
+                        .header("cache-control", "no-cache")
+                        .asString();
+            }
             log.info("/tracing/list request Success");
             return response.getBody();
         } catch (Exception ex){
