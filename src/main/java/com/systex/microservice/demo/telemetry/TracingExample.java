@@ -21,6 +21,9 @@ public class TracingExample {
 
     Logger log = LogManager.getLogger(TracingExample.class);
 
+    public TracingExample(){
+        log.info("test");
+    }
     /**
      * 模擬購物車新增品項的 API 接口
      * @return
@@ -30,6 +33,11 @@ public class TracingExample {
     public String item() throws Exception{
 
         HttpResponse<String> response = Unirest.get("http://telemetry-backend:8080/get/listQuote")
+                .headers(getTraceHeaders()) // 將 tracing 相關 header 送給下一個  request
+                .header("cache-control", "no-cache")
+                .asString();
+
+        HttpResponse<String> response2 = Unirest.get("http://telemetry-backend:8080/get/price/123")
                 .headers(getTraceHeaders()) // 將 tracing 相關 header 送給下一個  request
                 .header("cache-control", "no-cache")
                 .asString();
