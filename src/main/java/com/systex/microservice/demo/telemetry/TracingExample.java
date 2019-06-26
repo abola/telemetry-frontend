@@ -26,13 +26,19 @@ public class TracingExample {
 
     /**
      * 模擬購物車新增品項的 API 接口
-     * @return
+     * @return HTML
      * @throws Exception
      */
-    @GetMapping(path="/list")
-    public String item() {
+    @GetMapping(path="/")
+    public String entry() {
+
+        StringBuilder html = new StringBuilder();
+
+        html.append("<table>");
+        html.append("<tr><th>品項</th><th>價格</th><th>庫存</th></tr>");
 
         try {
+
             HttpResponse<String> response = Unirest.get("http://telemetry-backend:8080/get/listQuote")
                     .headers(getTraceHeaders()) // 將 tracing 相關 header 送給下一個  request
                     .header("cache-control", "no-cache")
@@ -41,16 +47,18 @@ public class TracingExample {
             List<Map<String, String>> items = new ObjectMapper().readValue(response.getBody(), new TypeReference<List<Map<String, String>>>() {});
 
             for( Map<String, String> item: items ) {
-                HttpResponse<String> response2 = Unirest.get("http://telemetry-backend:8080/get/inStock/"+item.get("uniqueId"))
+                HttpResponse<String> inStock = Unirest.get("http://telemetry-backend:8080/get/inStock/"+item.get("uniqueId"))
                         .headers(getTraceHeaders()) // 將 tracing 相關 header 送給下一個  request
                         .header("cache-control", "no-cache")
                         .asString();
+                html.append("<tr><td>"+item.get("name")+"</td><td>"+item.get("price")+"</td><td>"+inStock+"</td></tr>");
             }
+            html.append("</table>");
             log.info("/tracing/list request Success");
-            return response.getBody();
+            return html.toString();
         } catch (Exception ex){
             log.error("/tracing/list request Failed. Cause by: " + ex.getMessage());
-            return "{}";
+            return "Error";
         }
 
     }

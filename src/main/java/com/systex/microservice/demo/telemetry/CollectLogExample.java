@@ -18,7 +18,7 @@ import java.util.UUID;
 
 
 @RestController
-@RequestMapping(path = "/")
+@RequestMapping(path = "/logging")
 public class CollectLogExample {
 
     Logger log = LogManager.getLogger(CollectLogExample.class);
@@ -29,7 +29,7 @@ public class CollectLogExample {
      * @return
      * @throws Exception
      */
-    @GetMapping(path="/logging/{item}/add")
+    @GetMapping(path="/{item}/add")
     public String item(@PathVariable("item") String item) throws Exception{
 
         if (Strings.isNullOrEmpty(item) ) return "{\"status\":\"error\"}";
