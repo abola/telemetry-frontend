@@ -9,18 +9,13 @@ pipeline {
   }
     
   environment {
-    IMG_TAG = "${env.BUILD_NUMBER}"
+    IMG_TAG = "${params.imageTag.trim() == '' ? env.BUILD_NUMBER : params.imageTag }"
   }
 
   stages {
     stage('init') {
       steps{
         checkout scm
-        script {
-          if ( params.imageTag != '') {
-            IMG_TAG = "${params.imageTag}"
-          }
-        }
       }
     }
 
