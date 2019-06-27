@@ -38,7 +38,7 @@ public class TracingExample {
         html.append("<tr><th>品項</th><th>價格</th><th>庫存</th></tr>");
 
         try {
-
+            // 請求 backend 取得品項清單
             HttpResponse<String> response = Unirest.get("http://telemetry-backend:8080/get/listQuote")
                     .headers(getTraceHeaders()) // 將 tracing 相關 header 送給下一個  request
                     .header("cache-control", "no-cache")
@@ -62,7 +62,28 @@ public class TracingExample {
         }
 
     }
+    /**
+     * 模擬錯誤的發生
+     * @return HTML
+     * @throws Exception
+     */
+    @GetMapping(path="/error")
+    public String getDbConnection() {
+        log.info("{\"action\":\"/tracing/error\",\"msg\":\"Function called.\"}");
 
+        try {
+            // 請求 會觸發模擬錯誤的後端
+            HttpResponse<String> response = Unirest.get("http://telemetry-backend:8080/get/dbConnection")
+                    .headers(getTraceHeaders()) // 將 tracing 相關 header 送給下一個  request
+                    .header("cache-control", "no-cache")
+                    .asString();
+
+            return "{}";
+        } catch (Exception ex){
+            log.error("{\"action\":\"/tracing/error\",\"msg\":\""+ex.getMessage()+"\"}");
+            return "Error";
+        }
+    }
     /**
      * 回傳 Tracing 相關的 headers
      * @return Map<String, String>
