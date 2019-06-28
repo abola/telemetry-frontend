@@ -5,6 +5,7 @@
             <JsonLayout compact="true" eventEol="true">
                 <KeyValuePair key="hostname" value="${hostName}"/>
                 <KeyValuePair key="_tracing" value="$${ctx:tracing}"/>
+                <KeyValuePair key="timestamp" value="$${date:yyyy-MM-dd'T'HH:mm:ss.SSSZ}" />
             </JsonLayout>
         </Http>
     </appenders>
